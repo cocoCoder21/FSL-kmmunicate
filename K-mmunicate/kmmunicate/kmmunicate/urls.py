@@ -20,5 +20,6 @@ from k_app import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('kcam/', views.kcam, name='cam'),
+    path('result/', views.result, name='output'),
     path('admin/', admin.site.urls),
 ]
