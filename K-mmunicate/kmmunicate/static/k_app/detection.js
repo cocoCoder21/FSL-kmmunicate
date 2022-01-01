@@ -61,27 +61,31 @@ function get_keypoints(results) {
     }
   
   }
+  
+  // HIDDEN HEADER TAG
+  $("#hidden-raw").html(all_keypoints);
+  document.getElementById("hidden-raw").value = all_keypoints.toString();
+  console.log(document.getElementById("hidden-raw").value ); // .split(',')
 
-  let framed_keypoints = Array(30).fill(all_keypoints);
-   
-
-      $.ajax({
-        url: 'http://localhost:8000/kcam/',
-        type: 'POST',
-        data: JSON.stringify({
-          handResponse: all_keypoints
-        }),
-        contentType: "application/json",
-        // dataType: "json",
-        headers: {"X-CSRFToken":'{{ csrf_token }}'},
-        success: function (result) {
-            // console.log(typeof(h_data))
-            console.log("successful post ajax request!");
-        },
-        error: function (result) {
-            console.log("error: ajax request failed.");
-        }
-      });
+  
+  
+      // $.ajax({
+      //   url: 'http://localhost:8000/kcam/',
+      //   type: 'POST',
+      //   data: JSON.stringify({
+      //     handResponse: all_keypoints
+      //   }),
+      //   contentType: "application/json",
+      //   // dataType: "json",
+      //   headers: {"X-CSRFToken":'{{ csrf_token }}'},
+      //   success: function (result) {
+      //       // console.log(typeof(h_data))
+      //       console.log("successful post ajax request!");
+      //   },
+      //   error: function (result) {
+      //       console.log("error: ajax request failed.");
+      //   }
+      // });
 
   //     framed_keypoints = []
 
@@ -90,6 +94,8 @@ function get_keypoints(results) {
   //     console.log(data);
   //   });
   // });
+
+
 
 }
 
@@ -116,3 +122,28 @@ const camera = new Camera(videoElement, {
   height: 580
 });
 camera.start();
+
+// ===========================================================
+
+// function get_predictions(url){
+//   return $.ajax({
+//       type: "GET",
+//       url: url,
+//       cache: false,
+//       async: false
+//   }).responseText;
+// }
+
+
+// //example use
+// var msg=getURL("message.php");
+// alert(msg);
+
+// url = 'http://localhost:8000/kcam/';
+
+// async function foo() {
+//   var res = await fetch(url)
+//   console.log("hello")
+//   var json = await res.json()
+//   console.log("awaits")
+// }

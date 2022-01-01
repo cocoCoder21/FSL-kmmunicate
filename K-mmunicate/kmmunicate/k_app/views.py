@@ -1,15 +1,14 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect, HttpResponse, StreamingHttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, StreamingHttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.templatetags.static import static
-from django.http import JsonResponse
 from django.conf import settings
 from django.template import loader
 import tensorflow as tf
 import numpy as np
 import json
 import os
-import h5py
+
 
 
 # ===================== VARIABLES  & CLASSES ==========================
@@ -37,11 +36,10 @@ class detection(object):
     def fsl_predict(self):
         self.res = self.model.predict(np.expand_dims(self.hand_response, axis=0))[0]
 
-        # print("SHAPE : ", self.res.shape)
-        print(self.res[np.argmax(self.res)])
+
         if self.res[np.argmax(self.res)] > self.threshold: 
             self.result = str(self.action_labels[np.argmax(self.res)])
-            print(self.result)
+            
         else:
             self.result = "Please try again"
       
@@ -61,10 +59,13 @@ class detection(object):
             
 
 
+
+
 # =========================== MY VIEWS ===============================
 
 def index(request):
     return render(request,'k_app/index.html')
+
 
 
 # @csrf_protect
@@ -72,18 +73,19 @@ def index(request):
 def kcam(request):
 
     
-    if request.method == "POST":
+    # if request.method == "POST":
         
-        req = request.body
-        # print(req)
-        post_result = json.loads(req.decode('utf-8'))
-        hand_response = post_result['handResponse']
+    #     req = request.body
+    #     # print(req)
+    #     post_result = json.loads(req.decode('utf-8'))
+    #     hand_response = post_result['handResponse']
+    #     # print(type(hand_response))
+    #     p = detection()
+    #     p.get_predictions(hand_response) 
         
-        p = detection()
-        p.get_predictions(hand_response) 
-        
-        s = p.result
-        print("RESULT  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ", p.result)
+    #     s = p.result
+    #     print("RESULT  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ", p.result)
+    #     kcam.s = p.result
     # signs= {
     #     'sign':p.result
     # }
@@ -95,13 +97,37 @@ def kcam(request):
     #, {"signs":p.result}
 
 
+
+
 def result(request):
-    x = kcam.s
-    print(x)
+
+    if request.method == 'POST':
+        hand_response = request.POST.get('keypoints').split(',')
+        print("LENGTH : ",hand_response)  #THE COMMA'S ARE INCUDED AS STRING, FIX THIS SOON!
+        raw_keypoints = [float(num) for num in list(hand_response) if num != ',']
+        # print(raw_keypoints, len(raw_keypoints))
+        p = detection()
+        p.get_predictions(raw_keypoints)
+        print(p.result)
+        return render(request, 'k_app/kcam.html', {'signs': p.result})
+        # return HttpResponse("SUCCESS!", {'signs': p.result})
+
+        #FUNCTION : This also reload the page, so find a way stay on the page.
+
+    # return render(request, 'k_app/kcam.html', {'signs': p.result}) #, {'form': x} #,
 
 
 
+# # else:
+#     #     pass
+#         # return()
 
+#         #THROWS ValueError: Input 0 of layer "sequential" is incompatible 
+#         # with the layer: expected shape=(None, 126), found shape=(None, 1369)
+
+#         #FUNCTION : This also reload the page, so find a way stay on the page.
+
+#     return render(request, 'k_app/kcam.html', {'signs': p.result}) #, {'form': x} #,
 
 
 

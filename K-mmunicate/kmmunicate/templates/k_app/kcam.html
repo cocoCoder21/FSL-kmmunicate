@@ -6,70 +6,55 @@
 <div class="container">
   <div class="jumbotron">
     <h2>KCAM PAGE</h2>
-    <h4 id="sign_output">{{ sign }}</h4>
+    <h4 id="sign_output">{{ sign }} HOLD</h4>
    
 
     <video class="input_video"></video>
-    <input id="fsl_play" type="submit" class="btn btn-primary" value="Let's Kmmunicate">
-  
+    <!-- <input id="fsl_play" type="submit" class="btn btn-primary" value="Let's Kmmunicate">
+     -->
+    
+    <form method="POST" action="{% url 'output' %}">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input id="hidden-raw" type="text" name="keypoints" style='display: none'>
+      <input id="fsl_play" type="submit" class="btn btn-primary" value="Let's Kmmunicate">
+    </form>
+
+    <!-- <form method="POST" action="{% url 'cam' %}">
+      {% csrf_token %}
+      {{ form.as_p }}
+       <button id='try-again' type="button" class="btn btn-warning">Try again</button>
+    </form> -->
+
+
     <canvas class="output_canvas" width="800px" height="580px"></canvas>
+    <!-- <h6 id="hidden-raw" style='display: none'></h6> -->
     </div>
 </div>
 
 
-<!-- ====================================================== -->
-
-
-<!-- ====================================================== -->
-
-<!-- <script>
-  var
-  console.log()
-</script> -->
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
 
-  
-  $(document).ready(function(){
+    //No hands detected
+    //Please try again
 
-    setInterval(function(){
-  
-      // var sign_template = JSON.parse("{{signs|escapejs}}");
-      var sign_template = "{{ signs }}";
-        // var sign_template = JSON.parse("{{ signs }}");
-        console.log("RESPONSE = ", sign_template);
-        var sign_tag = document.getElementById('sign_output');
-        sign_tag.innerHTML=sign_template;
-
-    }, 3000);
-
-  
-  
-    $('#fsl_play').on('click', function () { 
+    $('#fsl_play').on('click', function (e) { 
+    var sign_template = "{{ signs }}";
+    alert(sign_template);
     var obj = document.createElement('audio');
     obj.crossOrigin = 'anonymous';
-    var speech = "{% static 'audio/a.mp3' %}";
-    var letter = ['a','b','c'];
-    
-    //TEMPLATE TAG AUDIO SIGN
-    // var sign_template = "{{ signs }}";
-    // var sign_audio = speech.slice(0,14) + sign_template +speech.slice(15)
-
-    obj.src = speech; 
+    var speech = "{% static 'audio/a.mp3' %}";  //FORMAT : /static/audio/a.mp3   --> 
+    var sign_audio = speech.slice(0,14) + sign_template +speech.slice(15)
+    alert(sign_audio);
+    obj.src = sign_audio; 
     obj.play(); 
-});
 
-//     $("fsl_play").click(function(){
-// console.log('PLAYED SUCCESSFULLY!')
-// const audio = new Audio(speech);
-// audio.play();
-// $.ajax({
-//         url: 'http://localhost:8000/kcam/', 
-//         success: function(result){
-//             $("#div1").html(result);
-//           }});
-// });
+    // $("#sign_output").html(all_keypoints);
+    document.getElementById("sign_output").value = sign_template;
+
+    // e.preventDefault()
 
   });
 
@@ -78,30 +63,5 @@
 
 </script>
 
-<!-- RESPONSE =  {&#x27;sign&#x27;: &lt;bound method 
-  BoundField.value of &lt;django.forms.boundfield.BoundField 
-  object at 0x000002123EAA2A90&gt;&gt;} -->
-
-  
-<!-- <script>
-        
-  const tweetsElement = document.getElementById("sign_output")
-  const xhr = new XMLHttpRequest()
-  const method = "get"
-  const url = "/kcam/"
-  const responseType = "json"
-
-  xhr.responseType = responseType
-  xhr.open(method, url)
-  xhr.onload = function () {
-      console.log("testing")
-      const serverResponse = this.response
-      var listedItems = serverResponse.response
-      console.log(listedItems)
-  }
-
-  xhr.send()
-
-</script> -->
 
 {% endblock %}
