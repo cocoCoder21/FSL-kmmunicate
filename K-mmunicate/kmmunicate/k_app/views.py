@@ -64,7 +64,7 @@ class detection(object):
 # =========================== MY VIEWS ===============================
 
 def index(request):
-    return render(request,'k_app/index.html')
+    return render(request,'k_app/landing.html')
 
 
 
@@ -72,7 +72,7 @@ def index(request):
 @csrf_exempt 
 def kcam(request):
 
-    return render(request, 'k_app/kcam.html')
+    return render(request, 'k_app/cam_page.html')
 
 
 

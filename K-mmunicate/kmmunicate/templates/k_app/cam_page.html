@@ -1,0 +1,114 @@
+{% extends "k_app/index.html" %}
+{% load static%}
+
+{% block body_block %}
+
+<style>
+    .header{
+      background-image: url("{% static 'k_app/images/KmmunicateBG.gif' %}")
+    }
+
+    .k_container{
+        background-image: url("{% static 'k_app/images/KmmunicatePageBG.png' %}");
+    }
+  </style>
+  
+  
+    <nav class="navbar navbar-expand-lg navbar-light" style="background: #79BB86; text-align: right">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{% url 'index' %}"><img src="{% static 'k_app/images/K-mmunicateLogo.png' %}"></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#about-section">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'cam' %}">kcam</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  </nav>
+
+<div class="k_container">
+    <div class="card">
+      <div class="inner-box">
+    
+        <div class="cardMain">
+            <a href=""><img src="{% static 'k_app/images/K-mmunicateLogo2.png' %}"></a>
+            <!-- <video id="webCam" autoplay playsinline width="800" height="580"></video> -->
+            <video class="input_video"></video>
+            <form id ='my-post' method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input id="hidden-raw" type="text" name="keypoints" style='display: none'>
+                <input id="fsl_play" type="submit" class="btn btn-primary" value="Let's Kmmunicate">
+              </form>
+
+            
+
+            <canvas class="output_canvas" width="800px" height="580px"></canvas>
+            <!-- <body onLoad="startKmmunicate();"></body>
+            <button type="startButton" >Let's K-mmunicate</button> -->
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+
+
+  $(document).on('submit', '#my-post', function(e){
+
+      $.ajax({
+        type: 'POST',
+        url: '/result/',
+        data:{
+          keypoints:$('#hidden-raw').val(),
+          csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+        }, success: function(response){
+
+          let sign = JSON.parse(response)
+          sign = sign['signs'];
+
+          var obj = document.createElement('audio');
+          obj.crossOrigin = 'anonymous';
+          var speech = "{% static 'audio/a.mp3' %}";  //FORMAT : /static/audio/a.mp3   --> 
+          var sign_audio = speech.slice(0,14) + sign +speech.slice(15)
+      
+          obj.src = sign_audio; 
+          obj.play(); 
+          
+          var sign_tag = document.getElementById('sign_output');
+          sign_tag.innerHTML=sign;
+        }
+
+      });
+
+      e.preventDefault()
+  });
+
+  
+
+  //  $(document).ready(function(){
+
+  //   setInterval(function(){
+  //       var sign_tag = document.getElementById('sign_output');
+  //       sign_tag.innerHTML=sign;
+
+  //   }), 3000};
+
+</script>
+
+{% endblock %}

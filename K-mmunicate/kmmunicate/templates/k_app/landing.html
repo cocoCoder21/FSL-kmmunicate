@@ -1,0 +1,83 @@
+{% extends "k_app/index.html" %}
+{% load static%}
+
+{% block welcome_block %}
+<style>
+  .header{
+    background-image: url("{% static 'k_app/images/KmmunicateBG.gif' %}")
+  }
+</style>
+
+<section class="header">
+  <nav class="navbar navbar-expand-lg navbar-light" style="background: #79BB86; text-align: right">
+<div class="container-fluid">
+  <a class="navbar-brand" href="{% url 'index' %}"><img src="{% static 'k_app/images/K-mmunicateLogo.png' %}"></a>
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#about-section">About</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'cam' %}">kcam</a>
+      </li>
+    </ul>
+  </div>
+</div>
+</nav>
+
+<div class="text-box">
+    <h1><img src="{% static 'k_app/images/K-mmunicateCircle2.png' %}"></h1>
+    <a href="" class="StartBtn">Try K-mmunicate now</a>
+  </div>
+</section>
+{% endblock %}
+
+{% block about_block %}
+
+<section id='about-section' class="about">
+    <div class="kmmunicateAbout">
+      <h1>What is K-mmunicate?</h1>
+      <h2><img src="{% static 'k_app/images/KmmunicateHands.gif' %}"></h2>
+      <p>K-mmunicate is a web-based application for Filipino Sign language recognition. The name of the system is
+        a combination of two words, "K" meaning "kinesics" (body movements and gestures regarded as a form of
+        nonverbal communication) and "mmunicate" that derives from the word "communicate". The purpose of the
+        system is to help people without hearing disabilities or speech-impaired people understand how FSL works. </p>
+    </div>
+    <div class="kmmunicateWhy">
+      <h1></h1>
+      <h2>What is the purpose of K-mmunicate?</h2>
+      <p>With the help of the system, it will provide immediate assistance and
+        support to anyone who seek a guide in interpreting Filipino Sign Languages.
+        The system will benefit both people with and without speech or hearing disabilities.
+        It will help people without knowledge of FSL to understand the language and at the same time,
+        it will help people with hearing disabilities communicate easier,
+        as people will now understand what they wanted to say.
+        The system will serve as a guide to help both people with and without hearing disabilities
+        communicate with one another, in an easier and effortless way.
+        <br><br>
+        K-mmunicate aims to assist users in identifying and understanding real-time
+        Filipino Sign Language hand signals and seeks to support users by translating
+        Filipino Sign Language into an audible speech.</p>
+
+    </div>
+    <div class="kmmunicateSteps">
+      <h1>How to use K-mmunicate?</h1>
+      <div class="kmmunicateStepsPics">
+        <h2><img src="{% static 'k_app/images/K-mmunicateSteps1.gif' %}"> <img src="{% static 'k_app/images/K-mmunicateSteps2.gif' %}"> <img src="{% static 'k_app/images/K-mmunicateSteps3.gif' %}"></h2>
+        <hr>
+        <h3><img src="{% static 'k_app/images/K-mmunicateSteps4.gif' %}"> <img src="{% static 'k_app/images/K-mmunicateSteps5.gif' %}"> <img src="{% static 'k_app/images/K-mmunicateSteps6.gif' %}"></h3>
+      </div>
+    </div>
+    <div class="kmmunicateLast">
+      <h1>Be a Voice to the Voiceless</h1>
+      <h2>Try K-mmunicate now</h2>
+    </div>
+  </section>
+
+{% endblock %}
