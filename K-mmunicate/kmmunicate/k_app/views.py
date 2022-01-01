@@ -72,45 +72,23 @@ def index(request):
 @csrf_exempt 
 def kcam(request):
 
-    
-    # if request.method == "POST":
-        
-    #     req = request.body
-    #     # print(req)
-    #     post_result = json.loads(req.decode('utf-8'))
-    #     hand_response = post_result['handResponse']
-    #     # print(type(hand_response))
-    #     p = detection()
-    #     p.get_predictions(hand_response) 
-        
-    #     s = p.result
-    #     print("RESULT  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ", p.result)
-    #     kcam.s = p.result
-    # signs= {
-    #     'sign':p.result
-    # }
-
-    # sign_json = json.dumps(signs)
-
-    
-    return render(request, 'k_app/kcam.html') #, {"signs":sign_json}
-    #, {"signs":p.result}
-
+    return render(request, 'k_app/kcam.html')
 
 
 
 def result(request):
 
     if request.method == 'POST':
-        hand_response = request.POST.get('keypoints').split(',')
-        print("LENGTH : ",hand_response)  #THE COMMA'S ARE INCUDED AS STRING, FIX THIS SOON!
+        # print(request.POST['keypoints'])
+        hand_response = request.POST['keypoints'].split(',')
+        # print("LENGTH : ",hand_response)  #THE COMMA'S ARE INCUDED AS STRING, FIX THIS SOON!
         raw_keypoints = [float(num) for num in list(hand_response) if num != ',']
         # print(raw_keypoints, len(raw_keypoints))
         p = detection()
         p.get_predictions(raw_keypoints)
         print(p.result)
-        return render(request, 'k_app/kcam.html', {'signs': p.result})
-        # return HttpResponse("SUCCESS!", {'signs': p.result})
+        # return render(request, 'k_app/kcam.html', {'signs': p.result})
+        return HttpResponse(json.dumps({'signs': p.result}))
 
         #FUNCTION : This also reload the page, so find a way stay on the page.
 
