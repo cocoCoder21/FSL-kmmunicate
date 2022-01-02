@@ -7,7 +7,7 @@
   <div class="jumbotron">
     <h2>KCAM PAGE</h2>
     <h4 id="sign_output">{{ sign }} HOLD</h4>
-   
+    <h3>Me: <span id="char_output"></span></h3>
 
     <video class="input_video"></video>
     <!-- <input id="fsl_play" type="submit" class="btn btn-primary" value="Let's Kmmunicate">
@@ -17,7 +17,7 @@
       {% csrf_token %}
       {{ form.as_p }}
       <input id="hidden-raw" type="text" name="keypoints" style='display: none'>
-      <input id="fsl_play" type="submit" class="btn btn-primary" value="Let's Kmmunicate">
+      <input id="fsl_play" class="btn btn-primary" value="Clear">
     </form>
 
     <canvas class="output_canvas" width="800px" height="580px"></canvas>
@@ -29,48 +29,46 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
+ 
+ $(document).on('submit', '#my-post', function(e){
+
+$.ajax({
+  type: 'POST',
+  url: '/result/',
+  data:{
+    keypoints:$('#hidden-raw').val(),
+    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+  }, success: function(response){
+
+    let sign = JSON.parse(response)
+    sign = sign['signs'];
+
+    var obj = document.createElement('audio');
+    obj.crossOrigin = 'anonymous';
+    var speech = "{% static 'audio/a.mp3' %}";  //FORMAT : /static/audio/a.mp3   --> 
+    var sign_audio = speech.slice(0,14) + sign +speech.slice(15)
+
+    obj.src = sign_audio; 
+    obj.play(); 
+    
+    var sign_tag = document.getElementById('sign_output');
+    sign_tag.innerHTML=sign;
+  }
+
+});
+
+e.preventDefault()
+});
 
 
-  $(document).on('submit', '#my-post', function(e){
 
-      $.ajax({
-        type: 'POST',
-        url: '/result/',
-        data:{
-          keypoints:$('#hidden-raw').val(),
-          csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
-        }, success: function(response){
+//  $(document).ready(function(){
 
-          let sign = JSON.parse(response)
-          sign = sign['signs'];
+//   setInterval(function(){
+//       var sign_tag = document.getElementById('sign_output');
+//       sign_tag.innerHTML=sign;
 
-          var obj = document.createElement('audio');
-          obj.crossOrigin = 'anonymous';
-          var speech = "{% static 'audio/a.mp3' %}";  //FORMAT : /static/audio/a.mp3   --> 
-          var sign_audio = speech.slice(0,14) + sign +speech.slice(15)
-      
-          obj.src = sign_audio; 
-          obj.play(); 
-          
-          var sign_tag = document.getElementById('sign_output');
-          sign_tag.innerHTML=sign;
-        }
-
-      });
-
-      e.preventDefault()
-  });
-
-  
-
-  //  $(document).ready(function(){
-
-  //   setInterval(function(){
-  //       var sign_tag = document.getElementById('sign_output');
-  //       sign_tag.innerHTML=sign;
-
-  //   }), 3000};
-
+//   }), 3000};
 </script>
 
 
