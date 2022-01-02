@@ -92,12 +92,11 @@ nav img {
   }
   .nav-links {
     position: absolute;
-<<<<<<< HEAD
     height: 100vh;
     width: 200px;
     top: 0;
     right: 20%;
-=======
+
     top: 53%;
     left: 78%;
     transform: translate(-50%,-50%);
@@ -194,7 +193,6 @@ nav img {
     font-family: 'Staatliches', cursive;
     font-size: 90px;
     color: #43824F;
->>>>>>> 0d69a59a20daa21aaf53e680de6e18aa3eca790e
     text-align: left;
     z-index: 2;
   }

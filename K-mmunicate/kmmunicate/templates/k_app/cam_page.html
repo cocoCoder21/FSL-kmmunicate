@@ -33,18 +33,22 @@
             </div>
 
             <div class="right-col col">
-              <a href=""><img src="{% static 'k_app/images/K-mmunicateLogo2.png' %}"></a>
-              <h2 class="results" style="float: right; text-align: center; ">HELLO</h2>
-              <h2>Sign: <span class="answer"></span></h2>
+              <a href=""><img src="{% static 'k_app/images/K-mmunicateLogo2.png' %}" class="k_logo"></a>
+              <!-- <h2 class="results" style="float: right; text-align: center; ">HELLO</h2> -->
+              <!-- <div class="container"></div> -->
+              <div class="container" style="margin-top: 50px;">
+                <h1 id="sign_output" style="text-align: center; font-size: 4rem; color: #43824F;">Sign <span class="answer"></span></h1>
+              </div>
+              <div class="container" style="text-align: center; margin-top: 90px;">
+                <form id ='my-post' method="POST">
+                  {% csrf_token %}
+                  {{ form.as_p }}
+                  <input id="hidden-raw" type="text" name="keypoints" style='display: none'> 
+                  <input id="fsl_play" type="submit" class="btn btn-success" style="text-align:center; font-size: 2rem;" value="  Let's Kmmunicate  ">
+                </form>
+              </div>
             </div>
-            <!-- <div>
-              <form id ='my-post' method="POST">
-              {% csrf_token %}
-              {{ form.as_p }}
-              <input id="hidden-raw" type="text" name="keypoints" style='display: none'>
-              <input id="fsl_play" type="submit" class="btn btn-primary" style="float: right;" value="Let's Kmmunicate">
-            </form>
-          </div> -->
+            
             <!-- <video id="webCam" autoplay playsinline width="800" height="580"></video> -->
             
             <!-- <body onLoad="startKmmunicate();"></body>

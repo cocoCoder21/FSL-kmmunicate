@@ -67,3 +67,22 @@
   margin: 10px 15px;
   padding: 10px;
 }
+
+.k_logo{
+  float: right;
+}
+
+.k_btn{
+  float: none;
+  width: 20%;
+  margin-top: 270px;
+  margin-left: -120px;
+  background: #79BB86;
+  border: none;
+  padding: 5px;
+  font-size: 20px;
+  font-family: 'Titillium Web', sans-serif;
+  color: #fff;
+  position: absolute;
+  cursor: pointer;
+}
