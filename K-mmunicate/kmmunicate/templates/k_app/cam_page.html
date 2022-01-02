@@ -11,6 +11,11 @@
     .k_container{
         background-image: url("{% static 'k_app/images/KmmunicatePageBG.png' %}");
     }
+
+    html{
+      overflow: hidden;
+    }
+
   </style>
   
   
@@ -21,7 +26,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
+      <ul class="navbar-nav  ml-auto">
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Home</a>
         </li>
@@ -42,14 +47,18 @@
     
         <div class="cardMain">
             <a href=""><img src="{% static 'k_app/images/K-mmunicateLogo2.png' %}"></a>
+            <h2 class="results" style="float: right; text-align: center; ">HELLO</h2>
+            <!-- <div>
+              <form id ='my-post' method="POST">
+              {% csrf_token %}
+              {{ form.as_p }}
+              <input id="hidden-raw" type="text" name="keypoints" style='display: none'>
+              <input id="fsl_play" type="submit" class="btn btn-primary" style="float: right;" value="Let's Kmmunicate">
+            </form>
+          </div> -->
             <!-- <video id="webCam" autoplay playsinline width="800" height="580"></video> -->
             <video class="input_video"></video>
-            <form id ='my-post' method="POST">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <input id="hidden-raw" type="text" name="keypoints" style='display: none'>
-                <input id="fsl_play" type="submit" class="btn btn-primary" value="Let's Kmmunicate">
-              </form>
+            
 
             
 

@@ -14,6 +14,8 @@
     align-items: center;
     justify-content: center;
   }
+
+
   .card{
     width:1450px;
     height: 600px;
@@ -58,3 +60,6 @@
     display: none;
   }
   
+/* .results{
+  float: right;
+} */
