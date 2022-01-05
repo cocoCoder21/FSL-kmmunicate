@@ -19,6 +19,7 @@ with open(os.path.join(settings.STATIC_DIR, 'k_app\model_FSL.json'), 'r') as fil
 
 fsl_model.load_weights(os.path.join(settings.STATIC_DIR, 'k_app\model_FSL.h5'))
 
+keypoints_dict = {}
 
 
 class detection(object):
@@ -30,8 +31,24 @@ class detection(object):
         self.action_labels = np.array(['a','b','c'])
         self.res = []
         self.result = 'hold'
-        self.threshold = 0.999
+        self.threshold = 0.9999
+        self.keypoints_lookup = keypoints_dict
 
+    def is_value_exist(self):
+        for k,v in keypoints_dict.items():
+            if self.hand_response in v:
+                self.result = k
+                return True
+            else:
+                return False
+    
+    def is_key_exist(self):
+        for k,v in keypoints_dict.items():
+            if self.hand_response in k:
+
+                return True
+            else:
+                return False
 
     def fsl_predict(self):
         self.res = self.model.predict(np.expand_dims(self.hand_response, axis=0))[0]
@@ -45,17 +62,38 @@ class detection(object):
       
 
     def get_predictions(self, hand_response):
-
+        
         self.hand_response = hand_response
         check = np.array(self.hand_response)
        
         #NO HANDS CHECKER
-        if np.argmax(check) == 0:
-            # print('NO HANDS!')
-            self.result =  "No hands detected"
-        else:
+        # if np.argmax(check) == 0:
+        #     # print('NO HANDS!')
+        #     self.result =  "No hands detected"
+        # else:
+        #     if self.hand_response in self.keypoints_lookup:
+        #         self.result = list(keypoints_dict.keys())[list(keypoints_dict.values()).index(self.hand_response)]
+        #         print("AWIEEEEEE!!!")
+        #     else:
+        #         self.fsl_predict()
+        #         keypoints_dict[self.result].append(self.hand_response)
+        print("DICT: ",keypoints_dict)
+        if self.is_value_exist():
+            print('keypoint already cached.')
 
+        elif np.argmax(check) == 0:
+            keypoints_dict["No hands detected"] = []
+            keypoints_dict["No hands detected"].append(self.hand_response)
+            self.result ="No hands detected"
+            
+        else:
             self.fsl_predict()
+
+            if self.result in keypoints_dict.keys():
+                keypoints_dict[self.result].append(self.hand_response)
+            else:
+                keypoints_dict[self.result] = []
+                keypoints_dict[self.result].append(self.hand_response)
             
 
 
