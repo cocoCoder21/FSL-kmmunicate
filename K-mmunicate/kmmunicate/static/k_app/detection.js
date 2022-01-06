@@ -3,8 +3,21 @@ let detections = {};
 const videoElement = document.getElementsByClassName('input_video')[0];
 const canvasElement = document.getElementsByClassName('output_canvas')[0];
 const canvasCtx = canvasElement.getContext('2d');
+// const KeypointMemo = memoizer(get_keypoints)
 
+// function memoizer(fn){
+//   let cache = {};
 
+//   return function(val){
+//     if (cache[n] != undefined ) {
+//       return cache[n]
+//     } else {
+//       let result = fun(n)
+//       cache[n] = result
+//       return result
+//     }
+//   }
+// }
 
 function get_keypoints(results) {
   detections = results;
@@ -13,13 +26,11 @@ function get_keypoints(results) {
   let kp_handler = [];
   let hand_keypoints =detections.multiHandLandmarks[0]
   
-
   // ================================================================
-  if (detections.multiHandedness.length == 0){
+  if (detections.multiHandedness.length === 0){
     Array.prototype.push.apply(all_keypoints, new Array(126).fill(0.));
-    
 
-  } else if (detections.multiHandedness.length == 1){
+  } else if (detections.multiHandedness.length === 1){
     // console.log(detections.multiHandedness[0].label);
    
     for (let point = 0; point < 21; point++){
@@ -27,30 +38,15 @@ function get_keypoints(results) {
         hand_keypoints[point].z);
     }
 
-    //RIGHT - LEFT  
-
-    // if (detections.multiHandedness[0].label == 'Right'){
-    //   all_keypoints = kp_handler
-    //   Array.prototype.push.apply(all_keypoints, new Array(63).fill(0.));
-    // }else{
-    //   Array.prototype.push.apply(all_keypoints, new Array(63).fill(0.));
-    //   Array.prototype.push.apply(all_keypoints, kp_handler);
-    //   }
-    
-
     //LEFT - RIGHT
 
-    if (detections.multiHandedness[0].label == 'Right'){
-      Array.prototype.push.apply(all_keypoints, new Array(63).fill(0.));
-      Array.prototype.push.apply(all_keypoints, kp_handler);
-    }else{
-      all_keypoints = kp_handler
-      Array.prototype.push.apply(all_keypoints, new Array(63).fill(0.));
-      }
-
-
-
-      // console.log(detections.multiHandedness[0].label, "RESULT >>> ", all_keypoints);
+        if (detections.multiHandedness[0].label === 'Right'){
+          Array.prototype.push.apply(all_keypoints, new Array(63).fill(0.));
+          Array.prototype.push.apply(all_keypoints, kp_handler);
+        } else {
+          all_keypoints = kp_handler
+          Array.prototype.push.apply(all_keypoints, new Array(63).fill(0.));
+          }
 
   } else {
     total_keypoints = hand_keypoints.concat(detections.multiHandLandmarks[1])
@@ -66,36 +62,6 @@ function get_keypoints(results) {
   $("#hidden-raw").html(all_keypoints);
   document.getElementById("hidden-raw").value = all_keypoints.toString();
   console.log(document.getElementById("hidden-raw").value ); // .split(',')
-
-  
-  
-      // $.ajax({
-      //   url: 'http://localhost:8000/kcam/',
-      //   type: 'POST',
-      //   data: JSON.stringify({
-      //     handResponse: all_keypoints
-      //   }),
-      //   contentType: "application/json",
-      //   // dataType: "json",
-      //   headers: {"X-CSRFToken":'{{ csrf_token }}'},
-      //   success: function (result) {
-      //       // console.log(typeof(h_data))
-      //       console.log("successful post ajax request!");
-      //   },
-      //   error: function (result) {
-      //       console.log("error: ajax request failed.");
-      //   }
-      // });
-
-  //     framed_keypoints = []
-
-  // $("fsl_play").click(function(){
-  //   $.get('http://localhost:8000/kcam/', function(data){
-  //     console.log(data);
-  //   });
-  // });
-
-
 
 }
 
@@ -122,28 +88,3 @@ const camera = new Camera(videoElement, {
   height: 580
 });
 camera.start();
-
-// ===========================================================
-
-// function get_predictions(url){
-//   return $.ajax({
-//       type: "GET",
-//       url: url,
-//       cache: false,
-//       async: false
-//   }).responseText;
-// }
-
-
-// //example use
-// var msg=getURL("message.php");
-// alert(msg);
-
-// url = 'http://localhost:8000/kcam/';
-
-// async function foo() {
-//   var res = await fetch(url)
-//   console.log("hello")
-//   var json = await res.json()
-//   console.log("awaits")
-// }
