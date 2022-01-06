@@ -3,21 +3,7 @@ let detections = {};
 const videoElement = document.getElementsByClassName('input_video')[0];
 const canvasElement = document.getElementsByClassName('output_canvas')[0];
 const canvasCtx = canvasElement.getContext('2d');
-// const KeypointMemo = memoizer(get_keypoints)
 
-// function memoizer(fn){
-//   let cache = {};
-
-//   return function(val){
-//     if (cache[n] != undefined ) {
-//       return cache[n]
-//     } else {
-//       let result = fun(n)
-//       cache[n] = result
-//       return result
-//     }
-//   }
-// }
 
 function get_keypoints(results) {
   detections = results;
@@ -27,6 +13,7 @@ function get_keypoints(results) {
   let hand_keypoints =detections.multiHandLandmarks[0]
   
   // ================================================================
+ 
   if (detections.multiHandedness.length === 0){
     Array.prototype.push.apply(all_keypoints, new Array(126).fill(0.));
 
@@ -34,35 +21,38 @@ function get_keypoints(results) {
     // console.log(detections.multiHandedness[0].label);
    
     for (let point = 0; point < 21; point++){
-      kp_handler.push(hand_keypoints[point].x, hand_keypoints[point].y,
-        hand_keypoints[point].z);
+        delete hand_keypoints[point].visibility
+        kp_handler.push(Object.values(hand_keypoints[point]))
     }
+    kp_handler = kp_handler.flat()
 
     //LEFT - RIGHT
 
         if (detections.multiHandedness[0].label === 'Right'){
-          Array.prototype.push.apply(all_keypoints, new Array(63).fill(0.));
-          Array.prototype.push.apply(all_keypoints, kp_handler);
+          all_keypoints.push( new Array(63).fill(0.));
+          all_keypoints.push( kp_handler);
+          all_keypoints = all_keypoints.flat()
         } else {
           all_keypoints = kp_handler
-          Array.prototype.push.apply(all_keypoints, new Array(63).fill(0.));
+          all_keypoints.push(new Array(63).fill(0.));
+          all_keypoints = all_keypoints.flat()
           }
 
-  } else {
+  } else { 
     total_keypoints = hand_keypoints.concat(detections.multiHandLandmarks[1])
   
     for (let point = 0; point < 42; point++){
-      all_keypoints.push(total_keypoints[point].x, total_keypoints[point].y,
-        total_keypoints[point].z);
+        delete total_keypoints[point].visibility
+      all_keypoints.push(Object.values(total_keypoints[point]));
     }
-  
+    all_keypoints = all_keypoints.flat()
   }
   
   // HIDDEN HEADER TAG
   $("#hidden-raw").html(all_keypoints);
   document.getElementById("hidden-raw").value = all_keypoints.toString();
-  console.log(document.getElementById("hidden-raw").value ); // .split(',')
-
+//   console.log(document.getElementById("hidden-raw").value ); // .split(',')
+  // console.log(all_keypoints)
 }
 
 
