@@ -29,7 +29,7 @@
             <div class="left-col col">
               <video class="input_video"></video>
             
-            <canvas class="output_canvas"></canvas>
+            <canvas class="output_canvas" width="800px" height="580px"></canvas>
             </div>
 
             <div class="right-col col">
@@ -58,72 +58,40 @@
   </div>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script defer language="javascript" type="text/javascript" src="{% static 'k_app/detection.js' %}"></script>  
 <script>
 
 
 $(document).on('submit', '#my-post', function(e){
   setInterval(
-$.ajax({
-  type: 'POST',
-  url: '/result/',
-  data:{
-    keypoints:$('#hidden-raw').val(),
-    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
-  }, success: function(response){
+    function send_keypoints_to_server(){
+      $.ajax({
+            type: 'POST',
+            url: '/result/',
+            data:{
+              keypoints:$('#hidden-raw').val(),
+              csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+            }, success: function(response){
 
-    let sign = JSON.parse(response);
-    sign = sign['signs'];
+              let sign = JSON.parse(response);
+              sign = sign['signs'];
 
-    var obj = document.createElement('audio');
-    obj.crossOrigin = 'anonymous';
-    var speech = "{% static 'audio/a.mp3' %}";  //FORMAT : /static/audio/a.mp3   --> 
-    var sign_audio = speech.slice(0,14) + sign +speech.slice(15)
+              var obj = document.createElement('audio');
+              obj.crossOrigin = 'anonymous';
+              var speech = "{% static 'audio/a.mp3' %}";  //FORMAT : /static/audio/a.mp3   --> 
+              var sign_audio = speech.slice(0,14) + sign +speech.slice(15)
 
-    obj.src = sign_audio; 
-    obj.play(); 
-    
-    var sign_tag = document.getElementById('sign_output');
-    sign_tag.innerHTML=sign;
-  }
+              obj.src = sign_audio; 
+              obj.play(); 
+              
+              var sign_tag = document.getElementById('sign_output');
+              sign_tag.innerHTML=sign;
+            }
 
-}), 5000);
+          });
+    }, 5000);
 
 e.preventDefault()
-});
-
-$(document).ready(function(e) {
-  $('#fsl_play').click((function(req) {
-    var interval;
-        return function() {
-          
-          if(interval) clearInterval(interval);
-            interval = setInterval(function() {
-              $.ajax({
-              type: 'POST',
-              url: '/result/',
-              data:{
-                keypoints:$('#hidden-raw').val(),
-                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
-              }, success: function(response){
-
-                let sign = JSON.parse(response);
-                sign = sign['signs'];
-
-                var obj = document.createElement('audio');
-                obj.crossOrigin = 'anonymous';
-                var speech = "{% static 'audio/a.mp3' %}";  //FORMAT : /static/audio/a.mp3   --> 
-                var sign_audio = speech.slice(0,14) + sign +speech.slice(15)
-                obj.src = sign_audio; 
-                obj.play(); 
-                
-                var sign_tag = document.getElementById('sign_output');
-                sign_tag.innerHTML=sign;
-              }
-            });   
-          }, 4000);
-        };
-      })("#timer"));
-  e.preventDefault()
 });
 
 

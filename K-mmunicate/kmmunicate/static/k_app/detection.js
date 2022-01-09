@@ -29,21 +29,19 @@ function get_keypoints(results) {
     //LEFT - RIGHT
 
         if (detections.multiHandedness[0].label === 'Right'){
-          all_keypoints.push( new Array(63).fill(0.));
-          all_keypoints.push( kp_handler);
+          all_keypoints.push( new Array(63).fill(0.), kp_handler);
           all_keypoints = all_keypoints.flat()
         } else {
-          all_keypoints = kp_handler
-          all_keypoints.push(new Array(63).fill(0.));
+          all_keypoints.push( kp_handler, new Array(63).fill(0.));
           all_keypoints = all_keypoints.flat()
           }
 
-  } else { 
+  } else {
     total_keypoints = hand_keypoints.concat(detections.multiHandLandmarks[1])
   
     for (let point = 0; point < 42; point++){
         delete total_keypoints[point].visibility
-      all_keypoints.push(Object.values(total_keypoints[point]));
+        all_keypoints.push(Object.values(total_keypoints[point]));
     }
     all_keypoints = all_keypoints.flat()
   }
@@ -51,7 +49,7 @@ function get_keypoints(results) {
   // HIDDEN HEADER TAG
   $("#hidden-raw").html(all_keypoints);
   document.getElementById("hidden-raw").value = all_keypoints.toString();
-//   console.log(document.getElementById("hidden-raw").value ); // .split(',')
+  //   console.log(document.getElementById("hidden-raw").value ); //.split(',')
   // console.log(all_keypoints)
 }
 

@@ -12,12 +12,13 @@ import os
 
 # ===================== VARIABLES  & CLASSES ==========================
 
-with open(os.path.join(settings.STATIC_DIR, 'k_app\FSL_DST_MODEL2.json'), 'r') as file1:
+with open(os.path.join(settings.STATIC_DIR, 'k_app\model_FSL.json'), 'r') as file1:
     model = file1.read()
     fsl_model = tf.keras.models.model_from_json(model)
 
-fsl_model.load_weights(os.path.join(settings.STATIC_DIR, 'k_app\FSL_DST_MODEL2.h5'))
+fsl_model.load_weights(os.path.join(settings.STATIC_DIR, 'k_app\model_FSL.h5'))
 
+# Keypoint cached holder
 keypoints_dict = {}
 
 
@@ -30,7 +31,7 @@ class detection(object):
         self.action_labels = np.array(['a', 'b', 'c'])
         self.res = []
         self.result = 'hold'
-        self.threshold = 0.9999
+        self.threshold = 0.999
         self.keypoints_lookup = keypoints_dict
 
     def is_value_exist(self):
@@ -86,6 +87,10 @@ def index(request):
 def kcam(request):
 
     return render(request, 'k_app/cam_page.html')
+
+def favicon(request):
+    image_data = open(os.path.join(settings.STATIC_DIR, "k_app\images\K-mmunicateLogo.png"), "rb").read()
+    return HttpResponse(image_data, content_type='image/png')
 
 
 def result(request):
