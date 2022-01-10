@@ -82,11 +82,11 @@ def index(request):
     return render(request, 'k_app/landing.html')
 
 
-# @csrf_protect
 @csrf_exempt
 def kcam(request):
 
     return render(request, 'k_app/cam_page.html')
+
 
 def favicon(request):
     image_data = open(os.path.join(settings.STATIC_DIR, "k_app\images\K-mmunicateLogo.png"), "rb").read()
