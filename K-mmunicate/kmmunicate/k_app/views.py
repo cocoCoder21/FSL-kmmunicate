@@ -11,12 +11,12 @@ import os
 
 
 # ===================== VARIABLES  & CLASSES ==========================
-
-with open(os.path.join(settings.STATIC_DIR, 'k_app\model_FSL.json'), 'r') as file1:
+#model_FSL
+with open(os.path.join(settings.STATIC_DIR, 'k_app\FSL_MODEL.json'), 'r') as file1:
     model = file1.read()
     fsl_model = tf.keras.models.model_from_json(model)
 
-fsl_model.load_weights(os.path.join(settings.STATIC_DIR, 'k_app\model_FSL.h5'))
+fsl_model.load_weights(os.path.join(settings.STATIC_DIR, 'k_app\FSL_MODEL.h5'))
 
 # Keypoint cached holder
 keypoints_dict = {}
@@ -34,7 +34,7 @@ class detection(object):
         self.threshold = 0.999
         self.keypoints_lookup = keypoints_dict
 
-    def is_value_exist(self):
+    def is_value_exist(self,):
         for k,v in keypoints_dict.items():
             if self.hand_response in v:
                 self.result = k
