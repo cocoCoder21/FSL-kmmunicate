@@ -18,14 +18,13 @@ with open(os.path.join(settings.STATIC_DIR, 'k_app\FSL_MODEL.json'), 'r') as fil
 
 fsl_model.load_weights(os.path.join(settings.STATIC_DIR, 'k_app\FSL_MODEL.h5'))
 
-# Keypoint cached holder
+# memoize keypoint
 keypoints_dict = {}
 
 
 class detection(object):
 
     def __init__(self):
-        # self.dataset = fsl_dataset   #DICTIONARY - fsl_dataset['a']["10"][10]
         self.model = fsl_model
         self.hand_response = []
         self.action_labels = np.array(['a', 'b', 'c'])

@@ -18,7 +18,6 @@ function get_keypoints(results) {
     Array.prototype.push.apply(all_keypoints, new Array(126).fill(0.));
 
   } else if (detections.multiHandedness.length === 1){
-    // console.log(detections.multiHandedness[0].label);
    
     for (let point = 0; point < 21; point++){
         delete hand_keypoints[point].visibility
@@ -49,8 +48,6 @@ function get_keypoints(results) {
   // HIDDEN HEADER TAG
   $("#hidden-raw").html(all_keypoints);
   document.getElementById("hidden-raw").value = all_keypoints.toString();
-  //   console.log(document.getElementById("hidden-raw").value ); //.split(',')
-  // console.log(all_keypoints)
 }
 
 

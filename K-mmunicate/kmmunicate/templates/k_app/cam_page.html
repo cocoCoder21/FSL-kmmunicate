@@ -34,8 +34,7 @@
 
             <div class="right-col col">
               <a href=""><img src="{% static 'k_app/images/K-mmunicateLogo2.png' %}" class="k_logo"></a>
-              <!-- <h2 class="results" style="float: right; text-align: center; ">HELLO</h2> -->
-              <!-- <div class="container"></div> -->
+              
               <div class="container" style="margin-top: 50px;">
                 <h1 id="sign_output" style="text-align: center; font-size: 4rem; color: #43824F;">Sign <span class="answer"></span></h1>
               </div>
@@ -78,7 +77,7 @@ $(document).on('submit', '#my-post', function(e){
 
               var obj = document.createElement('audio');
               obj.crossOrigin = 'anonymous';
-              var speech = "{% static 'audio/a.mp3' %}";  //FORMAT : /static/audio/a.mp3   --> 
+              var speech = "{% static 'audio/a.mp3' %}";  
               var sign_audio = speech.slice(0,14) + sign +speech.slice(15)
 
               obj.src = sign_audio; 
